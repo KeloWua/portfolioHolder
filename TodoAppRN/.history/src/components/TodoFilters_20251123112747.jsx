@@ -1,0 +1,67 @@
+import { useDispatch, useSelector } from "react-redux";
+import { setFilter, setCategoryFilter } from "../features/todos/todosSlice";
+import Button from "../app/ui/Button";
+
+    export default function TodoFilters() {
+    const dispatch = useDispatch();
+    const filter = useSelector((state) => state.todos.filter);
+    const categories = useSelector(state => state.todos.categories || []);
+    const categoryFilter = useSelector(state => state.todos.categoryFilter);
+
+
+    return (
+        <View className='space-y-4'>
+            {/* Status Filters */}
+            <View className='flex flex-wrap gap-2'>
+                <Button
+                    onPress={() => dispatch(setFilter("all"))}
+                    variant={filter === "all" ? "primary" : "secondary"}
+                >
+                    📋 Todas
+                </Button>
+
+                <Button
+                    onPress={() => dispatch(setFilter("active"))}
+                    variant={filter === "active" ? "primary" : "secondary"}
+                >
+                    ⏳ Activas
+                </Button>
+
+                <Button
+                    onPress={() => dispatch(setFilter("completed"))}
+                    variant={filter === "completed" ? "primary" : "secondary"}
+                >
+                    ✅ Completadas
+                </Button>
+            </View>
+
+            {/* Category Filter */}
+            <View>
+                <Text className="block mb-2 text-gray-700 dark:text-gray-300 font-medium">
+                    🏷️ Filtrar por Categoría:
+                </Text>
+                <Picker
+                    id="category"
+                    onChange={(e) => dispatch(setCategoryFilter(e.target.value))}
+                    selectedValue={categoryFilter}
+                    className='w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400'
+                >
+                    <option value="all">Todas las Categorías</option>
+                    {categories.map((c, index) => (
+                        <option key={index} value={c.id}>{c.name}</option>
+                    ))}
+                </Picker>
+                <Picker
+                                selectedValue={category}
+                                onValueChange={(itemValue, itemIndex) => setCategory(itemValue)} 
+                            >
+                                {categories.map((c) => (
+                                    <Picker.Item key={c.id} label={c.name} value={c.id} />
+                                ))}
+                </Picker>
+            </View>
+        </View>
+    );
+}
+
+    

@@ -1,0 +1,59 @@
+import { useDispatch, useSelector } from "react-redux";
+import { setFilter, setCategoryFilter } from "../features/todos/todosSlice";
+import Button from "../app/ui/Button";
+
+    export default function TodoFilters() {
+    const dispatch = useDispatch();
+    const filter = useSelector((state) => state.todos.filter);
+    const categories = useSelector(state => state.todos.categories || []);
+    const categoryFilter = useSelector(state => state.todos.categoryFilter);
+
+
+    return (
+        <div className='space-y-4'>
+            {/* Status Filters */}
+            <div className='flex flex-wrap gap-2'>
+                <Button
+                    onClick={() => dispatch(setFilter("all"))}
+                    variant={filter === "all" ? "primary" : "secondary"}
+                >
+                    📋 Todas
+                </Button>
+
+                <Button
+                    onClick={() => dispatch(setFilter("active"))}
+                    variant={filter === "active" ? "primary" : "secondary"}
+                >
+                    ⏳ Activas
+                </Button>
+
+                <Button
+                    onClick={() => dispatch(setFilter("completed"))}
+                    variant={filter === "completed" ? "primary" : "secondary"}
+                >
+                    ✅ Completadas
+                </Button>
+            </div>
+
+            {/* Category Filter */}
+            <div>
+                <label htmlFor="category" className="block mb-2 text-gray-700 dark:text-gray-300 font-medium">
+                    🏷️ Filtrar por Categoría:
+                </label>
+                <select
+                    id="category"
+                    onChange={(e) => dispatch(setCategoryFilter(e.target.value))}
+                    value={categoryFilter}
+                    className='w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400'
+                >
+                    <option value="all">Todas las Categorías</option>
+                    {categories.map((c, index) => (
+                        <option key={index} value={c.id}>{c.name}</option>
+                    ))}
+                </select>
+            </div>
+        </div>
+    );
+}
+
+    
